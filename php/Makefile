@@ -12,7 +12,7 @@ info:
 up:
 	sudo docker-compose up -d
 	@echo ""
-	@echo "The app is available at http://localhost:8080"
+	@echo "The app is available at http://localhost:80"
 down:  
 	sudo docker-compose down
 
