@@ -1,11 +1,11 @@
 version: '3'
 
 services:
-  reverse-proxy:
+  rproxy:
     # The official v2 Traefik docker image
     image: reg.ntl.nc/library/traefik:latest
     # Enables the web UI and tells Traefik to listen to docker
-    command: --api.insecure=true --providers.docker
+    command: --api.insecure=true --providers.docker --providers.docker.exposedByDefault=false --providers.docker.defaultRule=Host(`{{ index .Labels "com.docker.compose.service" }}.localhost`)
 
     ports:
       # The HTTP port
@@ -15,12 +15,16 @@ services:
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.enable=true"
 
   whoami1:
     # A container that exposes an API to show its IP address
     image: reg.ntl.nc/library/whoami
-    scale: 1
+    scale: 2
     labels:
       - "traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"
+      - "traefik.enable=true"
+
 
 # --providers.docker.swarmMode=true

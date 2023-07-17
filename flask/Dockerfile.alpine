@@ -1,11 +1,11 @@
-FROM harbor.localhost/cache/python:3.12.0b4-slim
+FROM harbor.localhost/cache/python:3.12.0b4-alpine3.18
 
 WORKDIR /python-docker
 
-RUN apt-get update && apt-get -y install procps curl
+RUN apk upgrade && apk add procps curl
 
-RUN groupadd -g 1500 nonroot && \
-    useradd -u 1500 nonroot -g 1500 -m
+# RUN addgroup nonroot
+RUN adduser -D nonroot
 
 # RUN mkdir /.local && \
 #     chown nonroot:nonroot /.local
